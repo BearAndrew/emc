@@ -1,0 +1,152 @@
+<div class="app-body animated fadeIn">
+  <main class="main d-flex align-items-center">
+
+    <div *ngIf="!isLoginCalled">
+      <div class="lds-roller">
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+      </div>
+    </div>
+
+
+    <div class="container" *ngIf="isLoginCalled">
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <div class="card-group">
+            <div class="card p-4">
+              <div class="card-body">
+
+                <form #loginform="ngForm" [formGroup]="fg">
+                  <h1>登入</h1>
+                  <p class="text-muted">電子郵件登入</p>
+
+                  <div class="mb-3">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-user"></i></span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="帳號" formControlName="account" required>
+                    </div>
+                    <ng-container *ngFor="let error of error_messages.account">
+                      <div class="alert alert-danger fadeIn" *ngIf="account.hasError(error.type) && (account.dirty || account.touched)">
+                        {{ error.message }}
+                      </div>
+                    </ng-container>
+                  </div>
+
+
+                  <div class="mb-1">
+                    <div class="input-group">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="icon-lock"></i></span>
+                      </div>
+                      <input type="password" class="form-control" placeholder="密碼" formControlName="password" required>
+                    </div>
+                    <ng-container *ngFor="let error of error_messages.password">
+                      <div class="alert alert-danger fadeIn" *ngIf="password.hasError(error.type) && (password.dirty || password.touched)">
+                        {{ error.message }}
+                      </div>
+                    </ng-container>
+                  </div>
+
+                  <div class="row mb-1">
+                    <div class="col-6 offset-6 text-right">
+                      <button type="button" class="btn btn-link px-0">忘記密碼?</button>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col">
+                      <button type="button" class="btn btn-primary btn-block px-4" [disabled]="!fg.valid || disableLoginBtn" (click)="emailLogin()">登入</button>
+                    </div>
+                  </div>
+
+
+
+                  <div class="row mb-3">
+                    <div class="col">
+                      <div class="line-text">
+                        <span>其他方式登入</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row mb-3">
+                    <div class="col-md-6 col-12 mb-1">
+                      <button type="button" class="btn btn-brand btn-block btn-google-plus mr-1" style="margin-bottom: 4px" (click)="providerLogin('google')">
+                        <i class="fa fa-google"></i>
+                        <span>Google+</span>
+                      </button>
+                    </div>
+
+                    <div class="col-md-6 col-12 mb-1">
+                      <button type="button" class="btn btn-brand btn-block btn-facebook mr-1" style="margin-bottom: 4px" (click)="providerLogin('fb')">
+                        <i class="fa fa-facebook"></i>
+                        <span>Facebook</span>
+                      </button>
+                    </div>
+                  </div>
+
+
+                  <div class="row">
+                    <div class="col text-center">
+                      <span>不是會員?&nbsp;&nbsp;</span>
+                      <a [routerLink]="" (click)="routeToRegister()">註冊新帳號</a>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+
+<!-- <button (click)="addToast()">toast</button> -->
+<p-toast styleClass="custom-toast" position="bottom-center" key="bc"></p-toast>
+
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary mr-1" data-toggle="modal" (click)="myModal.show()">
+  Launch demo modal
+</button> -->
+
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">帳號連結</h4>
+      </div>
+      <div class="modal-body">
+        <p>已存在相同電子郵件帳號，是否做帳號連結？</p>
+
+        <ng-container *ngIf="!isDiffCredProvier">
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icon-lock"></i></span>
+            </div>
+            <input type="text" class="form-control" [(ngModel)]="diffCredEmail" readonly>
+          </div>
+
+          <div class="input-group mb-1">
+            <div class="input-group-prepend">
+              <span class="input-group-text"><i class="icon-lock"></i></span>
+            </div>
+            <input type="password" class="form-control" placeholder="密碼" [(ngModel)]="diffCredPw" required>
+          </div>
+        </ng-container>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="myModal.hide()">取消</button>
+        <button *ngIf="isDiffCredProvier" type="button" class="btn btn-primary" (click)="linkCreditProvider()">連結</button>
+        <button *ngIf="!isDiffCredProvier" type="button" class="btn btn-primary" (click)="linkCreditEmail()">連結</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

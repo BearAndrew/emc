@@ -1,0 +1,47 @@
+.line-text {
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+
+  span {
+    display: block;
+    font-size: 1rem;
+    color: #aaa;
+    position: relative;
+
+    &::after,&::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      background: #aaa;
+      width: calc(50% - 3.5rem);
+      height: 1px;
+    }
+
+    &::before {
+      left: 0;
+    }
+
+    &::after {
+      right: 0;
+    }
+  }
+}
+
+
+$md: 720px;
+
+:host ::ng-deep .custom-toast .p-toast-message {
+  // small the toast at mobile
+  @media screen and (max-width: $md){
+    width: 80vw;
+  }
+}
+
+:host ::ng-deep .p-toast-bottom-center {
+  // move to center
+  @media screen and (max-width: $md){
+    transform: translate(-40vw, 0);
+    margin-left: 0;
+  }
+}

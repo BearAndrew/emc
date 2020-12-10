@@ -1,0 +1,168 @@
+<div class="container">
+
+  <div class="card">
+    <div class="card-bg">
+      <div *ngIf="urlId" class="card-delete" (click)="myModal.show()"><i class="icon fa fa-trash"></i></div>
+      <div *ngIf="urlId" class="card-share" [cdkCopyToClipboard]="clipValue" (click)="addToast()"><i class="icon fa fa-share"></i></div>
+      <div class="card-photo-wrap">
+        <img src="assets/img/avatars/female.png" class="card-photo">
+         <div class="card-photo-edit"><i class="icon fa fa-pencil-square-o"></i></div>
+      </div>
+    </div>
+
+    <div class="card-title">
+      <div class="form-group card-item">
+        <div class="card-item-edit" (click)="editToggle.title = !editToggle.title">
+          <i *ngIf="!editToggle.title" class="icon fa fa-pencil"></i>
+          <i *ngIf="editToggle.title" class="icon fa fa-check"></i>
+        </div>
+        <h1 *ngIf="!editToggle.title">{{pCard.name || '&nbsp;'}}</h1>
+        <input *ngIf="editToggle.title" [(ngModel)]="pCard.name" class="form-control name" id="name" placeholder="名稱" autocomplete="off">
+
+        <p *ngIf="!editToggle.title">
+          <span class="p-tag p-tag-success p-tag-rounded p-tag-lg ">{{pCard.age}}歲</span>
+          <span class="p-tag p-tag-warning p-tag-rounded p-tag-lg ">{{pCard.constellation || '&nbsp;'}}</span>
+          <span class="p-tag p-tag-info p-tag-rounded p-tag-lg ">{{pCard.location || '&nbsp;'}}</span>
+        </p>
+        <div class="row">
+          <div class="col"><input *ngIf="editToggle.title" [(ngModel)]="pCard.age" class="form-control" id="age" placeholder="年齡" autocomplete="off"></div>
+          <div class="col"><input *ngIf="editToggle.title" [(ngModel)]="pCard.constellation" class="form-control" id="constellation" placeholder="星座" autocomplete="off"></div>
+          <div class="col"><input *ngIf="editToggle.title" [(ngModel)]="pCard.location" class="form-control" id="location" placeholder="區域" autocomplete="off"></div>
+        </div>
+        <div class="birth-clear"></div>
+
+      </div>
+
+    </div>
+
+    <div class="card-body">
+      <div class="form-group card-item">
+        <div class="card-item-edit" (click)="editToggle.job = !editToggle.job">
+          <i *ngIf="!editToggle.job" class="icon fa fa-pencil"></i>
+          <i *ngIf="editToggle.job" class="icon fa fa-check"></i>
+        </div>
+        <label for="job">職業</label>
+        <p *ngIf="!editToggle.job">{{pCard.job || '&nbsp;'}}</p>
+        <input *ngIf="editToggle.job" [(ngModel)]="pCard.job" class="form-control" id="job" autocomplete="off">
+      </div>
+
+
+      <div class="form-group card-item">
+        <div class="card-item-edit" (click)="editToggle.department = !editToggle.department">
+          <i *ngIf="!editToggle.department" class="icon fa fa-pencil"></i>
+          <i *ngIf="editToggle.department" class="icon fa fa-check"></i>
+        </div>
+        <label for="department">科系</label>
+        <p *ngIf="!editToggle.department">{{pCard.department || '&nbsp;'}}</p>
+        <input *ngIf="editToggle.department" [(ngModel)]="pCard.department" class="form-control" id="department" autocomplete="off">
+      </div>
+
+
+      <div *ngFor="let note of pCard.noteList; let i = index" class="form-group card-item">
+        <div class="card-item-edit" (click)="editToggle.noteList[i] = !editToggle.noteList[i]">
+          <i *ngIf="!editToggle.noteList[i]" class="icon fa fa-pencil"></i>
+          <i *ngIf="editToggle.noteList[i]" class="icon fa fa-check"></i>
+        </div>
+        <label for="noteList{{i}}">{{noteListName[i]}}</label>
+        <p *ngIf="!editToggle.noteList[i]">
+          <mat-chip-list #chipList class="example-chip">
+            <mat-chip *ngFor="let keyword of note.keywords" [ngClass]="keyword.class" [selectable]="true"
+                     [disableRipple]="true">
+              {{keyword.name}}
+            </mat-chip>
+          </mat-chip-list>
+        </p>
+        <!-- <input *ngIf="editToggle.noteList[i]" [(ngModel)]="note.keywords" class="form-control" id="noteList{{i}}.keywords" autocomplete="off"> -->
+        <mat-form-field *ngIf="editToggle.noteList[i]" class="example-chip-list">
+          <mat-chip-list #chipList class="example-chip">
+            <mat-chip *ngFor="let keyword of note.keywords" [ngClass]="keyword.class" [selectable]="true"
+                     [removable]="true" [disableRipple]="true" (removed)="remove(note.keywords, keyword)">
+              {{keyword.name}}
+              <mat-icon matChipRemove>cancel</mat-icon>
+            </mat-chip>
+            <input placeholder="輸入標籤"
+                   [matChipInputFor]="chipList"
+                   [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                   [matChipInputAddOnBlur]="true"
+                   (matChipInputTokenEnd)="add(note.keywords, 'blue', $event)">
+          </mat-chip-list>
+        </mat-form-field>
+
+        <p *ngIf="!editToggle.noteList[i]" class="card-item-content">{{note.content || '&nbsp;'}}</p>
+        <textarea *ngIf="editToggle.noteList[i]" [(ngModel)]="note.content" class="form-control" id="noteList{{i}}.content" autocomplete="off"></textarea>
+      </div>
+
+
+      <div class="form-group card-item">
+        <div class="card-item-edit" (click)="editToggle.comment = !editToggle.comment">
+          <i *ngIf="!editToggle.comment" class="icon fa fa-pencil"></i>
+          <i *ngIf="editToggle.comment" class="icon fa fa-check"></i>
+        </div>
+        <label for="department">簡評</label>
+        <p *ngIf="!editToggle.comment" class="card-item-content">{{pCard.comment || '&nbsp;'}}</p>
+        <textarea *ngIf="editToggle.comment" [(ngModel)]="pCard.comment" class="form-control" id="department" autocomplete="off"></textarea>
+      </div>
+
+
+      <div class="form-group card-item">
+        <div class="card-item-edit" (click)="editToggle.remark = !editToggle.remark">
+          <i *ngIf="!editToggle.remark" class="icon fa fa-pencil"></i>
+          <i *ngIf="editToggle.remark" class="icon fa fa-check"></i>
+        </div>
+        <label for="department">備註</label>
+        <p *ngIf="!editToggle.remark" class="card-item-content">{{pCard.remark || '&nbsp;'}}</p>
+        <textarea *ngIf="editToggle.remark" [(ngModel)]="pCard.remark" class="form-control" id="department" autocomplete="off"></textarea>
+      </div>
+
+
+    </div>
+  </div>
+
+  <button class="btn btn-float" (click)="save()">
+    <i class="fa fa-save"></i>
+  </button>
+
+  <!-- <mat-form-field class="example-chip-list">
+    <mat-chip-list #chipList class="example-chip"
+    cdkDropList
+    cdkDropListOrientation="horizontal"
+    (cdkDropListDropped)="drop(fruits, $event)">
+      <mat-chip *ngFor="let fruit of fruits" cdkDrag [ngClass]="fruit.class" [selectable]="selectable"
+               [removable]="removable" (removed)="remove(fruit)">
+        {{fruit.name}}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+    </mat-chip-list>
+  </mat-form-field> -->
+
+
+
+</div>
+
+
+<!-- <button (click)="addToast()">toast</button> -->
+<p-toast styleClass="custom-toast" position="bottom-center" key="bc"></p-toast>
+
+
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary mr-1" data-toggle="modal" (click)="myModal.show()">
+  Launch demo modal
+</button> -->
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">提醒</h4>
+      </div>
+      <div class="modal-body">
+        <p>確定刪除資料卡？</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="myModal.hide()">取消</button>
+        <button type="button" class="btn btn-danger" (click)="deleteCard()">刪除</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

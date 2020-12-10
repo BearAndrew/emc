@@ -1,0 +1,16 @@
+// primeng toast mobile rwd
+$md: 720px;
+:host ::ng-deep .custom-toast .p-toast-message {
+  // small the toast at mobile
+  @media screen and (max-width: $md){
+    width: 80vw;
+  }
+}
+
+:host ::ng-deep .p-toast-bottom-center {
+  // move to center
+  @media screen and (max-width: $md){
+    transform: translate(-40vw, 0);
+    margin-left: 0;
+  }
+}

@@ -1,0 +1,96 @@
+// Here you can add other styles
+@import "./variables";
+
+// padding left 0.x rem
+@for $i from 0 through 9 {
+  .p-r-0#{$i} {
+    $p: $i * 0.1rem;
+    padding-right: $p !important;
+  }
+}
+
+// padding left 0.x rem
+@for $i from 0 through 9 {
+  .p-l-0#{$i} {
+    $p: $i * 0.1rem;
+    padding-left: $p !important;
+  }
+}
+
+
+// container RWD
+[class^="container"] {
+  margin-top: 30px;
+
+  @media (max-width: $md) {
+    margin-top: 10px !important;
+    padding: 0 10px !important;
+  }
+}
+
+
+// line text
+.line-text {
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+
+  span {
+    display: block;
+    font-size: 1rem;
+    color: #aaa;
+    position: relative;
+
+    &::after,&::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      background: #aaa;
+      width: calc(50% - 3.5rem);
+      height: 1px;
+    }
+
+    &::before {
+      left: 0;
+    }
+
+    &::after {
+      right: 0;
+    }
+  }
+}
+
+// float button
+.btn-float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:30px;
+	right:30px;
+	color:#FFF;
+	border-radius:50%;
+	text-align:center;
+  box-shadow: 0px 0px 5px rgb(128, 128, 128);
+  z-index: 999;
+
+  i {
+    font-size: 1.5rem;
+  }
+}
+
+
+// primeng toast mobile rwd
+:host ::ng-deep .custom-toast .p-toast-message {
+  // small the toast at mobile
+  @media screen and (max-width: $md){
+    width: 80vw;
+  }
+}
+
+:host ::ng-deep .p-toast-bottom-center {
+  // move to center
+  @media screen and (max-width: $md){
+    transform: translate(-40vw, 0);
+    margin-left: 0;
+  }
+}

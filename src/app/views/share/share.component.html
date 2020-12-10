@@ -1,0 +1,63 @@
+<div  *ngIf="!isGetDB" class="app flex-row align-items-center">
+  <div class="lds-roller">
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+  </div>
+</div>
+
+
+<div *ngIf="isGetDB" class="container-fluid">
+  <div class="container animated fadeIn">
+
+    <div class="card">
+      <div class="card-bg">
+        <div class="card-photo-wrap">
+          <img src="assets/img/avatars/female.png" class="card-photo">
+        </div>
+      </div>
+
+      <div class="card-title">
+        <div class="form-group card-item">
+          <h1>{{pCard.name || '&nbsp;'}}</h1>
+        </div>
+
+        <div class="form-group card-item">
+          <p>
+            <span class="p-tag p-tag-success p-tag-rounded p-tag-lg ">{{pCard.age}}歲</span>
+            <span class="p-tag p-tag-warning p-tag-rounded p-tag-lg ">{{pCard.constellation || '&nbsp;'}}</span>
+            <span class="p-tag p-tag-info p-tag-rounded p-tag-lg ">{{pCard.location || '&nbsp;'}}</span>
+          </p>
+        </div>
+      </div>
+
+      <div class="card-body">
+        <div class="form-group card-item">
+          <label for="job">職業</label>
+          <p>{{pCard.job || '&nbsp;'}}</p>
+        </div>
+
+
+        <div class="form-group card-item">
+          <label for="department">科系</label>
+          <p>{{pCard.department || '&nbsp;'}}</p>
+        </div>
+
+
+        <div *ngFor="let note of pCard.noteList; let i = index" class="form-group card-item">
+          <label for="noteList{{i}}">{{noteListName[i]}}</label>
+          <p>
+            <mat-chip-list #chipList class="example-chip">
+              <mat-chip *ngFor="let keyword of note.keywords" [ngClass]="keyword.class" [selectable]="true"
+                       [disableRipple]="true">
+                {{keyword.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </p>
+
+          <p>{{note.content || '&nbsp;'}}</p>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>

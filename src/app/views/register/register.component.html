@@ -1,0 +1,107 @@
+<div class="app-body animated fadeIn">
+  <main class="main d-flex align-items-center">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8 mx-auto">
+          <div class="card p-4">
+            <div class="card-body p-4">
+              <form [formGroup]="fg">
+                <h1>註冊</h1>
+                <p class="text-muted">新建帳號</p>
+
+                <div class="mb-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-user"></i></span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Username" autocomplete="username" formControlName="username" required>
+                  </div>
+                  <ng-container *ngFor="let error of error_messages.username">
+                    <div class="alert alert-danger fadeIn" *ngIf="username.hasError(error.type) && (username.dirty || username.touched)">
+                      {{ error.message }}
+                    </div>
+                  </ng-container>
+                </div>
+
+
+
+                <div class="mb-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">@</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Email" autocomplete="email" formControlName="email" required>
+                  </div>
+                  <ng-container *ngFor="let error of error_messages.email">
+                    <div class="alert alert-danger fadeIn" *ngIf="email.hasError(error.type) && (email.dirty || email.touched)">
+                      {{ error.message }}
+                    </div>
+                  </ng-container>
+                </div>
+
+
+
+                <div class="mb-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Password" autocomplete="new-password" formControlName="password" required>
+                  </div>
+                  <ng-container *ngFor="let error of error_messages.password">
+                    <div class="alert alert-danger fadeIn" *ngIf="password.hasError(error.type) && (password.dirty || password.touched)">
+                      {{ error.message }}
+                    </div>
+                  </ng-container>
+                </div>
+
+
+
+                <div class="mb-3">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text"><i class="icon-lock"></i></span>
+                    </div>
+                    <input type="password" class="form-control" placeholder="Repeat password" autocomplete="new-password" formControlName="confirmPassword" required>
+                  </div>
+                  <ng-container *ngFor="let error of error_messages.confirmPassword">
+                    <div class="alert alert-danger fadeIn" *ngIf="confirmPassword.hasError(error.type) && (confirmPassword.dirty || confirmPassword.touched)">
+                      {{ error.message }}
+                    </div>
+
+                    <div class="alert alert-danger fadeIn" *ngIf="(!confirmPassword.errors && fg.errors?.passwordNotMatch) && error.type == 'passwordNotMatch' && (confirmPassword.dirty || confirmPassword.touched)">
+                      {{ error.message }}
+                    </div>
+                  </ng-container>
+                </div>
+
+
+
+                <div class="row mb-1">
+                  <div class="col-6 offset-6 text-right">
+                    <button type="button" class="btn btn-link px-0" (click)="sendEmailVerification()">重新寄送驗證信</button>
+                  </div>
+                </div>
+
+
+                <button type="button" class="btn btn-block btn-success mb-3" [disabled]="!fg.valid" (click)="register(email.value, password.value)">註冊</button>
+
+
+
+                <div class="row">
+                  <div class="col text-center">
+                    <span>已經有帳號了?&nbsp;&nbsp;</span>
+                    <a [routerLink]="'/login'">登入</a>
+                  </div>
+                </div>
+
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<p-toast styleClass="custom-toast" position="bottom-center" key="bc"></p-toast>

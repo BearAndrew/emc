@@ -1,0 +1,44 @@
+<div class="">
+  <h1>交友資料卡</h1>
+
+  <button class="btn btn-float" (click)="add()">
+    <i class="fa fa-plus"></i>
+  </button>
+
+  <div class="example-container" cdkDropListGroup>
+    <div class="row">
+      <div class="col-sm-6 col-md-4 col-6" cdkDropList [cdkDropListEnterPredicate]="dropListEnterPredicate" (cdkDropListDropped)="dropListDropped()"></div>
+      <div class="col-sm-6 col-md-4 col-6" cdkDropList *ngFor="let item of items | filter: filter; let i = index"
+         [cdkDropListEnterPredicate]="dropListEnterPredicate"
+         (cdkDropListDropped)="dropListDropped()">
+
+      <div cdkDrag class="profile-card" [cdkDragDisabled]="!draggable" (cdkDragMoved)="dragMoved($event);" (click)="routeToEdit(i)">
+        <!-- <div class="example-handle" cdkDragHandle><i class="fa fa-arrows"></i></div> -->
+        <div class="profile-card-bg">
+          <div class="profile-card-name">
+            <div> {{item.name || '&nbsp;'}} </div>
+          </div>
+
+        </div>
+
+        <div class="profile-card-body">
+          <div class="row">
+            <div class="col-6">{{item.age || '&nbsp;'}}歲</div>
+            <div class="col-6">{{item.constellation || '&nbsp;'}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col">{{item.job || '&nbsp;'}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col">{{item.department || '&nbsp;'}}</div>
+          </div>
+        </div>
+
+      </div>
+
+      </div>
+    </div>
+  </div>
+</div>
