@@ -1,0 +1,37 @@
+<div class="">
+  <h1>交友資料卡</h1>
+
+  <div class="example-container">
+    <div class="row">
+      <div class="col-sm-6 col-md-4 col-lg-3 col-xl-2 col-6" *ngFor="let item of items | filter: filter; let i = index">
+
+      <div class="profile-card" (click)="routeToEdit(item.id)">
+        <!-- <div class="example-handle" cdkDragHandle><i class="fa fa-arrows"></i></div> -->
+        <div class="profile-card-bg {{item.cardColor}}">
+          <div class="profile-card-name">
+            <div> {{item.name || '&nbsp;'}} </div>
+          </div>
+
+        </div>
+
+        <div class="profile-card-body">
+          <div class="row">
+            <div class="col-6">{{item.age || '&nbsp;'}}<span *ngIf="item.age">歲</span></div>
+            <div class="col-6">{{item.constellation || '&nbsp;'}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col">{{item.job || '&nbsp;'}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col">{{item.department || '&nbsp;'}}</div>
+          </div>
+        </div>
+
+      </div>
+
+      </div>
+    </div>
+  </div>
+</div>

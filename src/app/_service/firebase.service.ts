@@ -1,4 +1,4 @@
-import { ProfileCard } from './../_interface/profile-card';
+import { ProfileCard } from './../_ts/profile-card';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
@@ -11,20 +11,46 @@ import { map } from 'rxjs/operators';
 export class FirebaseService {
 
   uid;
+  cardFolderSnapSub = new BehaviorSubject<any>('');
   profileCardsSnapSub = new BehaviorSubject<any>('');
 
   constructor(private firestore: AngularFirestore,
     private authenticationService: AuthenticationService) {
 
-    this.uid = this.authenticationService.getCurrentUser().uid;
-    if (this.uid) {this.getProfileCardsDB();}
+    this.uid = this.authenticationService.getCurrentUser()?.uid;
+    if (this.uid) {
+      this.getCardFolderDB();
+    }
   }
 
 
 
-  private getProfileCardsDB() {
+  getCardFolderDB() {
+    // const db = this.firestore.collection('users-folder').doc(this.uid)
+    // .set({collectionList: [{collectionName: 'cards-folder'}, {collectionName: 'emc'}]});
     const db = this.firestore.collection('users-folder').doc(this.uid)
-    .collection('cards-folder').snapshotChanges().pipe(map(
+    .snapshotChanges().pipe(map(
+      (a) => {
+        const data = a.payload.data();
+        return data;
+      }
+    ));
+
+    db.subscribe((data) => {
+      this.cardFolderSnapSub.next(data);
+    });
+  }
+
+  getCardFolder(): Observable<any> {
+    return this.cardFolderSnapSub.asObservable();
+  }
+
+
+
+  getProfileCards(folderName: string): Observable<any>  {
+    // return this.profileCardsSnapSub.asObservable();
+    return this.firestore.collection('users-folder').doc(this.uid)
+    .collection(folderName).snapshotChanges().pipe(map(
       (action) => {
         return action.map((a) => {
           const data = a.payload.doc.data();
@@ -34,43 +60,28 @@ export class FirebaseService {
         });
       }
     ));
-    db.subscribe((data) => {
-      console.log('db: ' + JSON.stringify(data));
-      this.profileCardsSnapSub.next(data);
-    });
-
-
-    // this.firestore.collection('users-folder').doc(this.uid)
-    // .collection('cards-folder').snapshotChanges().subscribe((data) => {
-    //   console.log(data);
-    // });
   }
 
 
-  getProfileCards(): Observable<any>  {
-    return this.profileCardsSnapSub.asObservable();
-  }
-
-
-  addProfileCard(cardData: ProfileCard) {
+  addProfileCard(folderName: string, cardData: ProfileCard) {
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection('cards-folder').add({...cardData}).then(() => {
-      console.log('add profile card');
+    .collection(folderName).add({...cardData}).then(() => {
+      console.log('add profile card to ' + folderName + '!!');
     });
   }
 
 
-  setProfileCard(docId: string, cardData: ProfileCard) {
+  setProfileCard(folderName: string, docId: string, cardData: ProfileCard) {
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection('cards-folder').doc(docId).set({...cardData}).then(() => {
-      console.log('set profile card');
+    .collection(folderName).doc(docId).set({...cardData}).then(() => {
+      console.log('add profile card to ' + folderName + '!!');
     });
   }
 
 
-  deleteProfileCard(docId: string) {
+  deleteProfileCard(folderName: string, docId: string) {
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection('cards-folder').doc(docId).delete().then(() => {
+    .collection(folderName).doc(docId).delete().then(() => {
       console.log('delete profile card');
     });
   }

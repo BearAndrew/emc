@@ -1,0 +1,14 @@
+@media screen and (max-width: 720px) {
+  :host ::ng-deep .custom-toast .p-toast-message {
+    width: 80vw;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  :host ::ng-deep .p-toast-bottom-center {
+    -webkit-transform: translate(-40vw, 0);
+            transform: translate(-40vw, 0);
+    margin-left: 0;
+  }
+}
+/*# sourceMappingURL=register.component.css.map */

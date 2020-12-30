@@ -1,22 +1,17 @@
-import { AuthenticationService } from './../../_service/authentication.service';
-import { Subscription } from 'rxjs';
-import { FirebaseService } from './../../_service/firebase.service';
-import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
-import {
-  CdkDrag,
-  CdkDragStart,
-  CdkDropList, CdkDropListGroup, CdkDragMove, CdkDragEnter,
-  moveItemInArray
-} from '@angular/cdk/drag-drop';
-import {ViewportRuler} from '@angular/cdk/overlay';
+import { CdkDrag, CdkDragMove, CdkDropList, CdkDropListGroup, moveItemInArray } from '@angular/cdk/drag-drop';
+import { ViewportRuler } from '@angular/cdk/overlay';
+import { AfterViewInit, Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-
+import { Subscription } from 'rxjs';
+import { ProfileCard } from '../../_ts/profile-card';
+import { FirebaseService } from '../../_service/firebase.service';
 
 @Component({
-  templateUrl: 'dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  selector: 'app-card-folder',
+  templateUrl: './card-folder.component.html',
+  styleUrls: ['./card-folder.component.scss']
 })
-export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
+export class CardFolderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @ViewChild(CdkDropListGroup, {static: true}) listGroup: CdkDropListGroup<CdkDropList>;
   @ViewChild(CdkDropList, {static: true}) placeholder: CdkDropList;
@@ -24,7 +19,7 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
   draggable = false;
 
   // public items: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-  items: [];
+  items: ProfileCard[];
 
   public target: CdkDropList;
   public targetIndex: number;
@@ -45,9 +40,16 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.profileCardSub = this.firebaseService.getCardFolder().subscribe((data) => {
-      this.items = data.collectionList;
-      console.log('dashboard: ' + JSON.stringify(data));
+    this.route.paramMap.subscribe(params => {
+      const folderName = params.get('folder');
+      console.log('folderName: ' + folderName);
+
+      this.profileCardSub = this.firebaseService.getProfileCards(folderName).subscribe(
+        (data) => {
+          this.items = data;
+          console.log('getProfileCards: ' + JSON.stringify(data));
+        }
+      );
     });
   }
 
@@ -63,13 +65,13 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
   }
 
 
-  routeToEdit(folderName: string) {
-    this.router.navigate([folderName], { relativeTo: this.route });
+  routeToEdit(i: number) {
+    this.router.navigate([i], { relativeTo: this.route });
   }
 
 
   add() {
-    this.router.navigate(['edit-card']);
+    this.router.navigate(['new'], { relativeTo: this.route });
   }
 
 

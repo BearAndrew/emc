@@ -1,6 +1,6 @@
 import { ShareService } from './../../_service/share.service';
 import { Component, OnInit } from '@angular/core';
-import { noteListName, ProfileCard } from '../../_interface/profile-card';
+import { noteListName, ProfileCard } from '../../_ts/profile-card';
 import { ActivatedRoute } from '@angular/router';
 
 @Component({
@@ -18,9 +18,10 @@ export class ShareComponent implements OnInit {
     this.pCard = new ProfileCard();
     this.route.paramMap.subscribe(params => {
       const uid = params.get('uid');
+      const folderName = params.get('folderName');
       const docId = params.get('docId');
 
-      shareService.getProfileCardsDB(uid, docId).subscribe(
+      shareService.getProfileCardsDB(uid, folderName, docId).subscribe(
         (data) => {
           console.log(data);
           this.pCard = data;

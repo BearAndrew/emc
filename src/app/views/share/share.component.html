@@ -9,7 +9,7 @@
   <div class="container animated fadeIn">
 
     <div class="card">
-      <div class="card-bg">
+      <div class="card-bg {{pCard.cardColor}}">
         <div class="card-photo-wrap">
           <img src="assets/img/avatars/female.png" class="card-photo">
         </div>
@@ -31,19 +31,19 @@
 
       <div class="card-body">
         <div class="form-group card-item">
-          <label for="job">職業</label>
+          <label class="card-label" for="job">職業</label>
           <p>{{pCard.job || '&nbsp;'}}</p>
         </div>
 
 
         <div class="form-group card-item">
-          <label for="department">科系</label>
+          <label class="card-label" for="department">科系</label>
           <p>{{pCard.department || '&nbsp;'}}</p>
         </div>
 
 
         <div *ngFor="let note of pCard.noteList; let i = index" class="form-group card-item">
-          <label for="noteList{{i}}">{{noteListName[i]}}</label>
+          <label class="card-label" for="noteList{{i}}">{{noteListName[i]}}</label>
           <p>
             <mat-chip-list #chipList class="example-chip">
               <mat-chip *ngFor="let keyword of note.keywords" [ngClass]="keyword.class" [selectable]="true"
@@ -56,6 +56,16 @@
           <p>{{note.content || '&nbsp;'}}</p>
         </div>
 
+        <div class="form-group card-item">
+          <label class="card-label" for="department">簡評</label>
+          <p class="card-item-content">{{pCard.comment || '&nbsp;'}}</p>
+        </div>
+
+
+        <div class="form-group card-item">
+          <label class="card-label" for="department">備註</label>
+          <p class="card-item-content">{{pCard.remark || '&nbsp;'}}</p>
+        </div>
 
       </div>
     </div>

@@ -12,7 +12,7 @@ export class AuthGuard implements CanActivate {
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     return this.authenticationService.isLoginSuccess().pipe(map((data) => {
-      console.log('authGuard: ' + data);
+      console.log('authGuard: ' + data + ', state.url: ' + state.url);
       if (!data) {
         this.router.navigate(['/login'], { queryParams: { returnUrl: state.url }});
       }

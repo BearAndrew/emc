@@ -1,3 +1,6 @@
+import { CardFolderModule } from './../card-folder/card-folder.module';
+import { EditCardComponent } from './../edit-card/edit-card.component';
+import { CardFolderComponent } from './../card-folder/card-folder.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -10,6 +13,10 @@ const routes: Routes = [
     data: {
       title: 'Dashboard'
     }
+  },
+  {
+    path: ':folder',
+    loadChildren: () => import('../card-folder/card-folder.module').then(m => m.CardFolderModule)
   }
 ];
 

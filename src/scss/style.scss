@@ -6,13 +6,13 @@
 
 // If you want to add something do it here
 @import "custom.scss";
-
 @import "loader.scss";
-
 @import "drag-card.scss";
-
 @import "profile-card.scss";
+@import "color-picker.scss";
+@import "color.scss";
 
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 * {
   // 解決 perfect-scrollbar error

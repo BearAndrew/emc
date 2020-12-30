@@ -55,6 +55,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { SharePageComponent } from './views/share/share-page/share-page.component';
 
 @NgModule({
   imports: [
@@ -92,7 +93,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     P500Component,
     LoginComponent,
     RegisterComponent,
-    ShareComponent
+    ShareComponent,
+    SharePageComponent,
   ],
   providers: [{
     provide: LocationStrategy,

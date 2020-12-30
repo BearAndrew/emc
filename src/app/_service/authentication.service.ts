@@ -42,6 +42,7 @@ export class AuthenticationService {
     });
   }
 
+
   // Check login state
   isLoginSuccess(): Observable<boolean> {
     return this.logStateSubject as Observable<boolean>;
@@ -220,7 +221,9 @@ export class AuthenticationService {
 
   private loginRoute() {
     // get return url from route parameters or default to '/'
-    const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+    // const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+    const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
+    if (!returnUrl) { return; }
     console.log('loginRoute returnUrl: ' + returnUrl);
     this.logStateSubject.next(true);
     this.router.navigate([returnUrl]);

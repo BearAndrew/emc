@@ -1,4 +1,4 @@
-import { EditCardModule } from './views/edit-card/edit-card.module';
+import { SharePageComponent } from './views/share/share-page/share-page.component';
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // import { AngularFireAuthGuard, hasCustomClaim, redirectUnauthorizedTo, redirectLoggedInTo, canActivate } from '@angular/fire/auth-guard';
@@ -53,27 +53,20 @@ export const routes: Routes = [
   {
     path: '',
     component: DefaultLayoutComponent,
-    canActivate: [ AuthGuard ],
-    // ... canActivate(redirectUnauthorizedToLogin),
     data: {
-      title: 'Home'
+      title: '首頁'
     },
     children: [
       {
         path: 'dashboard',
+        canActivate: [ AuthGuard ],
+        // ... canActivate(redirectUnauthorizedToLogin),
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
-      {
-        path: 'edit-card',
-        loadChildren: () => import('./views/edit-card/edit-card.module').then(m => m.EditCardModule)
-      },
-      {
-        path: 'edit-card/:id',
-        loadChildren: () => import('./views/edit-card/edit-card.module').then(m => m.EditCardModule)
-      }
+      { path: 'share/:uid/:folderName', component: SharePageComponent },
+      { path: 'share/:uid/:folderName/:docId', component: ShareComponent },
     ]
   },
-  { path: 'share/:uid/:docId', component: ShareComponent },
   { path: '**', component: P404Component }
 ];
 

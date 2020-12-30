@@ -1,0 +1,66 @@
+.profile-card {
+  background: white;
+  height: 150px;
+  width: 100%;
+  display: inline-block;
+  margin-bottom: 1rem;
+  border-radius: 19px;
+  position: relative;
+  text-align: center;
+  -webkit-box-shadow: -1px 15px 30px -12px black;
+          box-shadow: -1px 15px 30px -12px black;
+  cursor: pointer;
+}
+
+.profile-card-bg {
+  position: relative;
+  height: 50px;
+  margin-bottom: .5rem;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+  -webkit-box-shadow: 0px 1px 10px #c8c8c8;
+          box-shadow: 0px 1px 10px #c8c8c8;
+}
+
+.profile-card-bg .profile-card-name {
+  position: relative;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.profile-card-edit {
+  position: absolute;
+  top: .5rem;
+  left: .5rem;
+  color: gray;
+  cursor: move;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1.5rem;
+  z-index: 1;
+}
+
+img.profile-card-photo {
+  position: relative;
+  height: 100px;
+  width: 100px;
+  border-radius: 50%;
+  top: 50px;
+  -webkit-box-shadow: 0px 0px 5px gray;
+          box-shadow: 0px 0px 5px gray;
+}
+
+.profile-card-body {
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+}
+
+.profile-card-body .row {
+  margin: 0 0 .5rem 0;
+}
+
+.profile-card-body .row * {
+  padding: 0 5px 0 5px;
+}
+/*# sourceMappingURL=profile-card.css.map */

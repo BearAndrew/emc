@@ -1,7 +1,9 @@
+import { colorList } from './color';
+
 export interface ProfileCard {
   // cardOrder: number;
   // photo: img;
-  // cardColor: string;
+  cardColor: string;
   name:  string;
   age: number;
   gender: string;
@@ -27,6 +29,7 @@ interface Ikeyword {
 }
 
 export class ProfileCard implements ProfileCard {
+  cardColor = colorList[0];
   name = '';
   age = 0;
   gender = '';

@@ -60,6 +60,12 @@
   }
 }
 
+
+button:focus {
+  outline: none;
+  border: 0;
+}
+
 // float button
 .btn-float{
 	position:fixed;

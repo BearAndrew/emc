@@ -1,5 +1,5 @@
 <div class="">
-  <h1>交友資料夾</h1>
+  <h1>交友資料卡</h1>
 
   <button class="btn btn-float" (click)="add()">
     <i class="fa fa-plus"></i>
@@ -12,16 +12,28 @@
          [cdkDropListEnterPredicate]="dropListEnterPredicate"
          (cdkDropListDropped)="dropListDropped()">
 
-      <div cdkDrag class="profile-card" [cdkDragDisabled]="!draggable" (cdkDragMoved)="dragMoved($event);" (click)="routeToEdit(item.collectionName)">
+      <div cdkDrag class="profile-card" [cdkDragDisabled]="!draggable" (cdkDragMoved)="dragMoved($event);" (click)="routeToEdit(i)">
         <!-- <div class="example-handle" cdkDragHandle><i class="fa fa-arrows"></i></div> -->
-        <div class="profile-card-bg cheerful-caramel">
+        <div class="profile-card-bg {{item.cardColor}}">
           <div class="profile-card-name">
-            <div> {{item.collectionName || '&nbsp;'}} </div>
+            <div> {{item.name || '&nbsp;'}} </div>
           </div>
 
         </div>
 
         <div class="profile-card-body">
+          <div class="row">
+            <div class="col-6">{{item.age || '&nbsp;'}}<span *ngIf="item.age">歲</span></div>
+            <div class="col-6">{{item.constellation || '&nbsp;'}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col">{{item.job || '&nbsp;'}}</div>
+          </div>
+
+          <div class="row">
+            <div class="col">{{item.department || '&nbsp;'}}</div>
+          </div>
         </div>
 
       </div>

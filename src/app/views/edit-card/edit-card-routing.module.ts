@@ -5,7 +5,17 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    component: EditCardComponent
+    component: EditCardComponent,
+    data: {
+      title: '卡片'
+    }
+  },
+  {
+    path: ':id',
+    component: EditCardComponent,
+    data: {
+      title: '卡片'
+    }
   }
 ];
 
