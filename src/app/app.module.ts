@@ -31,6 +31,7 @@ import { P500Component } from './views/error/500.component';
 import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { ShareComponent } from './views/share/share.component';
+import { SharePageComponent } from './views/share/share-page/share-page.component';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -55,7 +56,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
-import { SharePageComponent } from './views/share/share-page/share-page.component';
 
 @NgModule({
   imports: [

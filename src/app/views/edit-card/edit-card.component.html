@@ -2,7 +2,7 @@
 
   <div class="card">
     <div class="card-bg {{pCard.cardColor}}">
-      <div *ngIf="urlId" class="card-option">
+      <div *ngIf="urlDocId" class="card-option">
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
           <mat-icon>more_vert</mat-icon>
         </button>
@@ -15,14 +15,14 @@
             <mat-icon>folder_open</mat-icon>
             <span>移動至其他資料夾</span>
           </button>
-          <button mat-menu-item [cdkCopyToClipboard]="clipValue" (click)="addToast('已複製連結')" [disabled]="urlId == 'new'">
+          <button mat-menu-item [cdkCopyToClipboard]="clipValue" (click)="addToast('已複製連結')" [disabled]="urlDocId == 'new'">
             <mat-icon>share</mat-icon>
             <span>分享連結</span>
           </button>
         </mat-menu>
       </div>
 
-      <div *ngIf="urlId" class="card-bg-edit">
+      <div *ngIf="urlDocId" class="card-bg-edit">
         <button mat-icon-button [matMenuTriggerFor]="colorpicker" aria-label="Example icon-button with a menu">
           <mat-icon>colorize</mat-icon>
         </button>
@@ -30,7 +30,7 @@
           <div class="row" (click)="$event.stopPropagation();">
             <ng-container *ngFor="let color of colorList">
               <div class="col-3 pr-0">
-                <span class="color-picker {{color}}" [ngClass]="{'active' : pCard.cardColor == color}" (click)="pCard.cardColor = color; setColor(color)"></span>
+                <span class="color-picker {{color}}" [ngClass]="{'active' : pCard.cardColor == color}" (click)="pCard.cardColor = color;"></span>
               </div>
             </ng-container>
           </div>
@@ -45,7 +45,7 @@
 
     <div class="card-title">
       <div class="form-group card-item">
-        <div class="card-item-edit" (click)="editToggle.title = !editToggle.title">
+        <div class="card-item-edit" (click)="closeEditToggle('title', editToggle.title)">
           <i *ngIf="!editToggle.title" class="icon fa fa-pencil"></i>
           <i *ngIf="editToggle.title" class="icon fa fa-check"></i>
         </div>
@@ -53,14 +53,26 @@
         <input *ngIf="editToggle.title" [(ngModel)]="pCard.name" class="form-control name" id="name" placeholder="名稱" autocomplete="off">
 
         <p *ngIf="!editToggle.title">
-          <mat-chip [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.age}}歲</mat-chip>
-          <mat-chip [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.constellation || '&nbsp;'}}</mat-chip>
-          <mat-chip [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.location || '&nbsp;'}}</mat-chip>
+          <mat-chip *ngIf="pCard.age || pCard.birthday" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">
+            {{birthAge || pCard.age}}歲</mat-chip>
+          <mat-chip *ngIf="pCard.constellation || pCard.birthday" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">
+            {{birthConstellation ||pCard.constellation}}</mat-chip>
+          <mat-chip *ngIf="pCard.birthday" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.birthday | date: 'MM/dd'}}</mat-chip>
+          <mat-chip *ngIf="pCard.location" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.location}}</mat-chip>
         </p>
         <div class="row">
-          <div class="col"><input *ngIf="editToggle.title" [(ngModel)]="pCard.age" class="form-control" id="age" placeholder="年齡" autocomplete="off"></div>
-          <div class="col"><input *ngIf="editToggle.title" [(ngModel)]="pCard.constellation" class="form-control" id="constellation" placeholder="星座" autocomplete="off"></div>
-          <div class="col"><input *ngIf="editToggle.title" [(ngModel)]="pCard.location" class="form-control" id="location" placeholder="區域" autocomplete="off"></div>
+          <div class="col-4"><input *ngIf="editToggle.title" [(ngModel)]="pCard.age" class="form-control" id="age" placeholder="年齡" autocomplete="off"></div>
+          <div class="col-4"><input *ngIf="editToggle.title" [(ngModel)]="pCard.constellation" class="form-control" id="constellation" placeholder="星座" autocomplete="off"></div>
+          <div class="col-4"><input *ngIf="editToggle.title" [(ngModel)]="pCard.location" class="form-control" id="location" placeholder="區域" autocomplete="off"></div>
+          <div class="col" *ngIf="editToggle.title">
+            <mat-form-field class="mat-dp" (click)="dp.open()">
+              <mat-label>Input disabled</mat-label>
+              <input matInput [matDatepicker]="dp" [(ngModel)]="moment" (dateChange)="setBirthday(moment)">
+              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+              <mat-datepicker #dp disabled="false"></mat-datepicker>
+            </mat-form-field>
+            <span class="dp-input" (click)="dp.open()">{{ (pCard.birthday | date: 'yyyy/MM/dd') || "生日"}}</span>
+          </div>
         </div>
         <div class="birth-clear"></div>
 
@@ -70,7 +82,7 @@
 
     <div class="card-body">
       <div class="form-group card-item">
-        <div class="card-item-edit" (click)="editToggle.job = !editToggle.job">
+        <div class="card-item-edit" (click)="closeEditToggle('job', editToggle.job)">
           <i *ngIf="!editToggle.job" class="icon fa fa-pencil"></i>
           <i *ngIf="editToggle.job" class="icon fa fa-check"></i>
         </div>
@@ -81,7 +93,7 @@
 
 
       <div class="form-group card-item">
-        <div class="card-item-edit" (click)="editToggle.department = !editToggle.department">
+        <div class="card-item-edit" (click)="closeEditToggle('department', editToggle.department)">
           <i *ngIf="!editToggle.department" class="icon fa fa-pencil"></i>
           <i *ngIf="editToggle.department" class="icon fa fa-check"></i>
         </div>
@@ -92,7 +104,7 @@
 
 
       <div *ngFor="let note of pCard.noteList; let i = index" class="form-group card-item">
-        <div class="card-item-edit" (click)="editToggle.noteList[i] = !editToggle.noteList[i]">
+        <div class="card-item-edit" (click)="closeEditToggle('noteList', editToggle.noteList[i], i)">
           <i *ngIf="!editToggle.noteList[i]" class="icon fa fa-pencil"></i>
           <i *ngIf="editToggle.noteList[i]" class="icon fa fa-check"></i>
         </div>
@@ -105,7 +117,6 @@
             </mat-chip>
           </mat-chip-list>
         </p>
-        <!-- <input *ngIf="editToggle.noteList[i]" [(ngModel)]="note.keywords" class="form-control" id="noteList{{i}}.keywords" autocomplete="off"> -->
         <mat-form-field *ngIf="editToggle.noteList[i]" class="example-chip-list">
           <mat-chip-list #chipList class="example-chip">
             <mat-chip *ngFor="let keyword of note.keywords" [ngClass]="keyword.class" [selectable]="true"
@@ -118,7 +129,8 @@
                    [matChipInputFor]="chipList"
                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
                    [matChipInputAddOnBlur]="true"
-                   (matChipInputTokenEnd)="add(note.keywords, pTagColor, $event)">
+                   (matChipInputTokenEnd)="add(note.keywords, pTagColor, $event)"
+                   autocomplete="off">
             <!-- color picker -->
             <ng-container>
               <button mat-icon-button [matMenuTriggerFor]="colorpicker" aria-label="Tag color picker">
@@ -143,7 +155,7 @@
 
 
       <div class="form-group card-item">
-        <div class="card-item-edit" (click)="editToggle.comment = !editToggle.comment">
+        <div class="card-item-edit" (click)="closeEditToggle('comment', editToggle.comment)">
           <i *ngIf="!editToggle.comment" class="icon fa fa-pencil"></i>
           <i *ngIf="editToggle.comment" class="icon fa fa-check"></i>
         </div>
@@ -154,7 +166,7 @@
 
 
       <div class="form-group card-item">
-        <div class="card-item-edit" (click)="editToggle.remark = !editToggle.remark">
+        <div class="card-item-edit" (click)="closeEditToggle('remark', editToggle.remark)">
           <i *ngIf="!editToggle.remark" class="icon fa fa-pencil"></i>
           <i *ngIf="editToggle.remark" class="icon fa fa-check"></i>
         </div>
@@ -214,9 +226,9 @@
 
         <form [formGroup]="fg">
           <div *ngFor="let folder of folderList;">
-            <label *ngIf="folder.collectionName !== urlFolderName">
+            <label *ngIf="folder.folderName !== urlFolderId">
               <input type="radio" value="{{folder.collectionName}}" formControlName="folder">
-                <span>{{folder.collectionName}}</span>
+                <span>{{folder.folderName}}</span>
             </label>
           </div>
         </form>
@@ -229,3 +241,16 @@
     </div><!-- /.modal-content -->
   </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+
+
+
+<!-- <mat-form-field appearance="fill" (click)="dp.open()" style="visibility: hidden;">
+  <mat-label>Input disabled</mat-label>
+  <input matInput [matDatepicker]="dp" [(ngModel)]="pCard.birthday">
+  <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+  <mat-datepicker #dp disabled="false"></mat-datepicker>
+</mat-form-field> -->
+
+<!-- <p-calendar [(ngModel)]="pCard.birthday" [locale]="zh" [touchUI]="calendarTouch" [readonlyInput]="true" dateFormat="yy/mm/dd"
+            [style]="{'width':'100%'}" [inputStyle]="{'width':'100%'}" placeholder="生日"
+            [yearNavigator]="true" yearRange="1900:2050" showButtonBar="true"></p-calendar> -->

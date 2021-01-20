@@ -41,10 +41,10 @@ export class CardFolderComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
-      const folderName = params.get('folder');
-      console.log('folderName: ' + folderName);
+      const folderId = params.get('folder');
+      console.log('folderId: ' + folderId);
 
-      this.profileCardSub = this.firebaseService.getProfileCards(folderName).subscribe(
+      this.profileCardSub = this.firebaseService.getProfileCards(folderId).subscribe(
         (data) => {
           this.items = data;
           console.log('getProfileCards: ' + JSON.stringify(data));

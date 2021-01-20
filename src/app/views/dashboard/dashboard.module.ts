@@ -14,6 +14,8 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ToastModule } from 'primeng/toast';
@@ -32,6 +34,8 @@ import { ToastModule } from 'primeng/toast';
     MatChipsModule,
     MatFormFieldModule,
     MatIconModule,
+    MatMenuModule,
+    MatButtonModule,
     ModalModule,
     ClipboardModule,
     ToastModule

@@ -8,9 +8,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { ToastModule } from 'primeng/toast';
+import { CalendarModule } from 'primeng/calendar';
 
 import { EditCardRoutingModule } from './edit-card-routing.module';
 
@@ -30,7 +34,11 @@ import { EditCardRoutingModule } from './edit-card-routing.module';
     ClipboardModule,
     ToastModule,
     MatMenuModule,
-    MatButtonModule
+    MatButtonModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    CalendarModule
   ]
 })
 export class EditCardModule { }

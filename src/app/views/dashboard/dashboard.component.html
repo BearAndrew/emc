@@ -1,7 +1,7 @@
 <div class="">
   <h1>交友資料夾</h1>
 
-  <button class="btn btn-float" (click)="add()">
+  <button class="btn btn-float" (click)="myModal.show(); folderNameMode = 'new';">
     <i class="fa fa-plus"></i>
   </button>
 
@@ -12,21 +12,81 @@
          [cdkDropListEnterPredicate]="dropListEnterPredicate"
          (cdkDropListDropped)="dropListDropped()">
 
-      <div cdkDrag class="profile-card" [cdkDragDisabled]="!draggable" (cdkDragMoved)="dragMoved($event);" (click)="routeToEdit(item.collectionName)">
+      <div cdkDrag class="profile-card" [cdkDragDisabled]="!draggable" (cdkDragMoved)="dragMoved($event);">
         <!-- <div class="example-handle" cdkDragHandle><i class="fa fa-arrows"></i></div> -->
         <div class="profile-card-bg cheerful-caramel">
-          <div class="profile-card-name">
-            <div> {{item.collectionName || '&nbsp;'}} </div>
+          <div class="profile-card-edit">
+            <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+              <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+              <button mat-menu-item (click)="deleteModal.show();deleteFolderId = item.id; deleteFolderName = item.folderName">
+                <mat-icon>delete_outline</mat-icon>
+                <span>刪除</span>
+              </button>
+
+              <button mat-menu-item (click)="myModal.show();folderNameMode = 'rename'; renameFolderId = item.id;">
+                <mat-icon>edit</mat-icon>
+                <span>重新命名</span>
+              </button>
+            </mat-menu>
           </div>
-
+          <div class="profile-card-name">
+            <div> {{item.folderName || '&nbsp;'}} </div>
+          </div>
         </div>
-
-        <div class="profile-card-body">
-        </div>
-
+        <div class="profile-card-click" (click)="routeToEdit(item.id)"></div>
       </div>
 
       </div>
     </div>
   </div>
 </div>
+
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary mr-1" data-toggle="modal" (click)="myModal.show()">
+  Launch demo modal
+</button> -->
+
+<div bsModal #myModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 *ngIf="folderNameMode == 'new'" class="modal-title m-0">新增資料夾</h4>
+        <h4 *ngIf="folderNameMode == 'rename'" class="modal-title m-0">重新命名資料夾</h4>
+      </div>
+      <div class="modal-body">
+        <label class="card-label" for="cardFolderName">資料夾名稱</label>
+        <input [(ngModel)]="cardFolderName" class="form-control" id="cardFolderName" autocomplete="off" placeholder="輸入">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="myModal.hide()">取消</button>
+        <button *ngIf="folderNameMode == 'new'" type="button" class="btn btn-primary" [disabled]="!cardFolderName" (click)="addCardFolder(); myModal.hide()">新增</button>
+        <button *ngIf="folderNameMode == 'rename'" type="button" class="btn btn-primary" [disabled]="!cardFolderName" (click)="setCardFolder(); myModal.hide()">變更</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+
+
+
+<div bsModal #deleteModal="bs-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" [config]="{backdrop: 'static'}">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title m-0">刪除</h4>
+      </div>
+      <div class="modal-body">
+        <p class="m-0">確定刪除資料夾？</p><br>
+        <label class="card-label" for="deleteCardFolderCheck">輸入資料夾名稱</label>
+        <input [(ngModel)]="deleteFolderCheck" class="form-control" id="deleteCardFolderCheck" autocomplete="off" placeholder="輸入">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="deleteModal.hide()">取消</button>
+        <button type="button" class="btn btn-danger" [disabled]="deleteFolderCheck != deleteFolderName" (click)="deleteCardFolder(); deleteModal.hide()">刪除</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->

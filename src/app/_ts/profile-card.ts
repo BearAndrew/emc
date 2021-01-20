@@ -7,6 +7,7 @@ export interface ProfileCard {
   name:  string;
   age: number;
   gender: string;
+  birthday: Date;
   location: string; // 地點
   constellation: string; // 星座
   job: string;
@@ -30,8 +31,7 @@ interface Ikeyword {
 
 export class ProfileCard implements ProfileCard {
   cardColor = colorList[0];
-  name = '';
-  age = 0;
+  name = 'no name';
   gender = '';
   location = ''; // 地點
   constellation = ''; // 星座

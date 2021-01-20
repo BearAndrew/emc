@@ -25,6 +25,12 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
 
   // public items: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   items: [];
+  cardFolderName: string;
+  deleteFolderId: string;
+  deleteFolderName: string;
+  deleteFolderCheck: string;
+  renameFolderId: string;
+  folderNameMode: string; // new or rename
 
   public target: CdkDropList;
   public targetIndex: number;
@@ -46,7 +52,7 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.profileCardSub = this.firebaseService.getCardFolder().subscribe((data) => {
-      this.items = data.collectionList;
+      this.items = data;
       console.log('dashboard: ' + JSON.stringify(data));
     });
   }
@@ -63,13 +69,21 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
   }
 
 
-  routeToEdit(folderName: string) {
-    this.router.navigate([folderName], { relativeTo: this.route });
+  routeToEdit(collectionId: string) {
+    this.router.navigate([collectionId], { relativeTo: this.route });
   }
 
 
-  add() {
-    this.router.navigate(['edit-card']);
+  addCardFolder() {
+    this.firebaseService.addCardFolder(this.cardFolderName);
+  }
+
+  setCardFolder() {
+    this.firebaseService.setCardFolder(this.renameFolderId, this.cardFolderName);
+  }
+
+  deleteCardFolder() {
+    this.firebaseService.deleteCardFolder(this.deleteFolderId);
   }
 
 

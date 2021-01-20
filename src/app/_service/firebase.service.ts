@@ -11,6 +11,7 @@ import { map } from 'rxjs/operators';
 export class FirebaseService {
 
   uid;
+  cardFolder;
   cardFolderSnapSub = new BehaviorSubject<any>('');
   profileCardsSnapSub = new BehaviorSubject<any>('');
 
@@ -21,20 +22,42 @@ export class FirebaseService {
     if (this.uid) {
       this.getCardFolderDB();
     }
+
+    // this.firestore.collection('users-folder').doc(this.uid)
+    // .set({collectionList: [{collectionName: 'cards-folder', collectionId: 'cards-folder'},
+    // {collectionName: 'emc', collectionId: 'emc'}]});
   }
 
 
 
   getCardFolderDB() {
     // const db = this.firestore.collection('users-folder').doc(this.uid)
-    // .set({collectionList: [{collectionName: 'cards-folder'}, {collectionName: 'emc'}]});
+    // .snapshotChanges().pipe(map(
+    //   (a) => {
+    //     const data = a.payload.data();
+    //     return data;
+    //   }
+    // ));
+
+
+    // db.subscribe((data) => {
+    //   this.cardFolderSnapSub.next(data);
+    //   this.cardFolder = data;
+    // });
+
+
     const db = this.firestore.collection('users-folder').doc(this.uid)
-    .snapshotChanges().pipe(map(
-      (a) => {
-        const data = a.payload.data();
-        return data;
+    .collection('card-folder').snapshotChanges().pipe(map(
+      (action) => {
+        return action.map((a) => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          const res = {id: id, ...data};
+          return res;
+        });
       }
     ));
+
 
     db.subscribe((data) => {
       this.cardFolderSnapSub.next(data);
@@ -46,11 +69,42 @@ export class FirebaseService {
   }
 
 
+  addCardFolder(newFolderName: string) {
+    this.firestore.collection('users-folder').doc(this.uid)
+    .collection('card-folder').add({folderName: newFolderName}).then(() => {
+      console.log('add new folder ' + newFolderName + '!!');
+    });
+  }
 
-  getProfileCards(folderName: string): Observable<any>  {
-    // return this.profileCardsSnapSub.asObservable();
+
+  setCardFolder(folderId: string, newFolderName: string) {
+    this.firestore.collection('users-folder').doc(this.uid)
+    .collection('card-folder').doc(folderId).set({folderName: newFolderName}).then(() => {
+      console.log('set folder ' + folderId + 'as new name: ' + newFolderName + '!!');
+    });
+  }
+
+
+  deleteCardFolder(folderId: string) {
+    this.getProfileCards(folderId).subscribe(
+      (data) => {
+        for (const cardDoc of data) {
+          this.deleteProfileCard(folderId, cardDoc.id);
+        }
+
+        this.firestore.collection('users-folder').doc(this.uid)
+        .collection('card-folder').doc(folderId).delete().then(() => {
+          console.log('delete folder ' + folderId + ' and doc');
+        });
+    });
+
+  }
+
+
+
+  getProfileCards(folderId: string): Observable<any>  {
     return this.firestore.collection('users-folder').doc(this.uid)
-    .collection(folderName).snapshotChanges().pipe(map(
+    .collection('card-folder').doc(folderId).collection('card').snapshotChanges().pipe(map(
       (action) => {
         return action.map((a) => {
           const data = a.payload.doc.data();
@@ -63,26 +117,27 @@ export class FirebaseService {
   }
 
 
-  addProfileCard(folderName: string, cardData: ProfileCard) {
+  addProfileCard(folderId: string, cardData: ProfileCard) {
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection(folderName).add({...cardData}).then(() => {
-      console.log('add profile card to ' + folderName + '!!');
+    .collection('card-folder').doc(folderId).collection('card').add({...cardData}).then(() => {
+      console.log('add profile card to ' + folderId + '!!');
     });
   }
 
 
-  setProfileCard(folderName: string, docId: string, cardData: ProfileCard) {
+  setProfileCard(folderId: string, cardId: string, cardData: ProfileCard) {
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection(folderName).doc(docId).set({...cardData}).then(() => {
-      console.log('add profile card to ' + folderName + '!!');
+    .collection('card-folder').doc(folderId).collection('card').doc(cardId).set({...cardData}).then(() => {
+      console.log('add profile card to ' + folderId + '!!');
     });
   }
 
 
-  deleteProfileCard(folderName: string, docId: string) {
+  deleteProfileCard(folderId: string, cardId: string) {
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection(folderName).doc(docId).delete().then(() => {
+    .collection('card-folder').doc(folderId).collection('card').doc(cardId).delete().then(() => {
       console.log('delete profile card');
     });
   }
+
 }

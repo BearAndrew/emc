@@ -11,6 +11,13 @@ $border-radius-size: 14px;
   text-align: center;
   box-shadow: -1px 15px 30px -12px black;
   cursor: pointer;
+
+  &-click {
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+  }
 }
 
 .profile-card-bg {
@@ -31,8 +38,8 @@ $border-radius-size: 14px;
 
 .profile-card-edit {
   position: absolute;
-  top: .5rem;
-  left: .5rem;
+  top: .25rem;
+  right: .5rem;
   color: rgb(128, 128, 128);
   cursor: move;
   width: 2rem;
