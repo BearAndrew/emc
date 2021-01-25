@@ -1,4 +1,4 @@
-import { colorList } from './color';
+import { colorList } from './variable';
 
 export interface ProfileCard {
   // cardOrder: number;
@@ -7,7 +7,7 @@ export interface ProfileCard {
   name:  string;
   age: number;
   gender: string;
-  birthday: Date;
+  birthday: any;
   location: string; // 地點
   constellation: string; // 星座
   job: string;
@@ -19,6 +19,10 @@ export interface ProfileCard {
   }>;
   comment: string;
   remark: string;
+  mark: string; // 狀態標記
+  createTime: any; // 資料卡創建時間
+  startTime: any; // 開始聊天時間
+  lastEditTime: any; // 最後編輯時間
   // chekcList: {
   // };
 }

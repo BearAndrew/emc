@@ -57,7 +57,7 @@
   <!-- Main content -->
   <main class="main">
 
-    <ol class="breadcrumb m-0">
+    <ol class="breadcrumb m-0" style="position: fixed; width: 100%; z-index: 1020;">
       <li class="breadcrumb-item" *ngFor="let urlTreeElement of urlTreeArray; let isLast = last"
         ngClass="{'active' : isLast}">
         <a href="#{{urlTreeElement.url}}" *ngIf="!isLast">{{urlTreeElement.data | uppercase}}</a>

@@ -76,14 +76,17 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
 
   addCardFolder() {
     this.firebaseService.addCardFolder(this.cardFolderName);
+    this.cardFolderName = '';
   }
 
   setCardFolder() {
     this.firebaseService.setCardFolder(this.renameFolderId, this.cardFolderName);
+    this.cardFolderName = '';
   }
 
   deleteCardFolder() {
     this.firebaseService.deleteCardFolder(this.deleteFolderId);
+    this.deleteFolderCheck = '';
   }
 
 

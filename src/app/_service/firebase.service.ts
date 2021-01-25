@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/firestore';
 import { AuthenticationService } from './authentication.service';
 import { map } from 'rxjs/operators';
+import * as firebase from 'firebase';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +48,7 @@ export class FirebaseService {
 
 
     const db = this.firestore.collection('users-folder').doc(this.uid)
-    .collection('card-folder').snapshotChanges().pipe(map(
+    .collection('card-folder', ref => ref.orderBy('createTime')).snapshotChanges().pipe(map(
       (action) => {
         return action.map((a) => {
           const data = a.payload.doc.data();
@@ -71,7 +72,7 @@ export class FirebaseService {
 
   addCardFolder(newFolderName: string) {
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection('card-folder').add({folderName: newFolderName}).then(() => {
+    .collection('card-folder').add({folderName: newFolderName, createTime: firebase.firestore.FieldValue.serverTimestamp() }).then(() => {
       console.log('add new folder ' + newFolderName + '!!');
     });
   }
@@ -79,7 +80,8 @@ export class FirebaseService {
 
   setCardFolder(folderId: string, newFolderName: string) {
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection('card-folder').doc(folderId).set({folderName: newFolderName}).then(() => {
+    .collection('card-folder').doc(folderId)
+    .set({folderName: newFolderName}).then(() => {
       console.log('set folder ' + folderId + 'as new name: ' + newFolderName + '!!');
     });
   }
@@ -94,7 +96,7 @@ export class FirebaseService {
 
         this.firestore.collection('users-folder').doc(this.uid)
         .collection('card-folder').doc(folderId).delete().then(() => {
-          console.log('delete folder ' + folderId + ' and doc');
+          console.log('delete folder ' + folderId);
         });
     });
 
@@ -104,7 +106,7 @@ export class FirebaseService {
 
   getProfileCards(folderId: string): Observable<any>  {
     return this.firestore.collection('users-folder').doc(this.uid)
-    .collection('card-folder').doc(folderId).collection('card').snapshotChanges().pipe(map(
+    .collection('card-folder').doc(folderId).collection('card', ref => ref.orderBy('createTime')).snapshotChanges().pipe(map(
       (action) => {
         return action.map((a) => {
           const data = a.payload.doc.data();
@@ -118,6 +120,8 @@ export class FirebaseService {
 
 
   addProfileCard(folderId: string, cardData: ProfileCard) {
+    cardData.createTime = firebase.firestore.FieldValue.serverTimestamp();
+    cardData.lastEditTime = firebase.firestore.FieldValue.serverTimestamp();
     this.firestore.collection('users-folder').doc(this.uid)
     .collection('card-folder').doc(folderId).collection('card').add({...cardData}).then(() => {
       console.log('add profile card to ' + folderId + '!!');
@@ -126,9 +130,12 @@ export class FirebaseService {
 
 
   setProfileCard(folderId: string, cardId: string, cardData: ProfileCard) {
+    cardData.lastEditTime = firebase.firestore.FieldValue.serverTimestamp();
+    console.log('setProfileCard: ' + JSON.stringify(cardData));
     this.firestore.collection('users-folder').doc(this.uid)
-    .collection('card-folder').doc(folderId).collection('card').doc(cardId).set({...cardData}).then(() => {
-      console.log('add profile card to ' + folderId + '!!');
+    .collection('card-folder').doc(folderId).collection('card').doc(cardId)
+    .set({...cardData}).then(() => {
+      console.log('set profile card ' + folderId + '!!');
     });
   }
 

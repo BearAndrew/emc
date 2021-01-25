@@ -89,6 +89,19 @@ textarea {
       z-index: 1;
     }
 
+    .card-mark {
+      position: absolute;
+      top: .75rem;
+      left: 1rem;
+      color: rgb(128, 128, 128);
+      cursor: pointer;
+      width: 2rem;
+      height: 2rem;
+      font-size: 2rem;
+      text-align: center;
+      z-index: 1;
+    }
+
     .card-bg-edit {
       position: absolute;
       bottom: .75rem;
@@ -167,6 +180,11 @@ textarea {
     &-content {
       white-space: pre-wrap;
     }
+  }
+
+  &-edit-time {
+    text-align: right;
+    color: gray;
   }
 }
 

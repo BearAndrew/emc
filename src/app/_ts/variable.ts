@@ -3,3 +3,7 @@ export const colorList = [
   'blessing', 'healthy-water', 'confident-cloud', 'cheerful-caramel',
   'japanese-sugar', 'kozalak', 'tobacco-ad', 'ford-first-car'
 ];
+
+export const markList = [
+  '🔺', '❗️', '❌', '⭕️', '🐦'
+];

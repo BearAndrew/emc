@@ -2,6 +2,21 @@
 
   <div class="card">
     <div class="card-bg {{pCard.cardColor}}">
+      <div *ngIf="urlDocId" class="card-mark">
+        <button mat-icon-button [matMenuTriggerFor]="colorpicker" aria-label="Example icon-button with a menu">
+          {{pCard.mark}}
+        </button>
+        <mat-menu #colorpicker="matMenu" class="container color-picker-wrapper">
+          <div class="row">
+            <ng-container *ngFor="let mark of markList">
+              <div class="col-3 pr-0">
+                <span (click)="pCard.mark = mark">{{mark}}</span>
+              </div>
+            </ng-container>
+          </div>
+        </mat-menu>
+      </div>
+
       <div *ngIf="urlDocId" class="card-option">
         <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
           <mat-icon>more_vert</mat-icon>
@@ -49,9 +64,8 @@
           <i *ngIf="!editToggle.title" class="icon fa fa-pencil"></i>
           <i *ngIf="editToggle.title" class="icon fa fa-check"></i>
         </div>
-        <h1 *ngIf="!editToggle.title">{{pCard.name || '&nbsp;'}}</h1>
-        <input *ngIf="editToggle.title" [(ngModel)]="pCard.name" class="form-control name" id="name" placeholder="名稱" autocomplete="off">
 
+        <h1 *ngIf="!editToggle.title">{{pCard.name || '&nbsp;'}} <span *ngIf="pCard.startTime"> ({{pCard.startTime}}) </span></h1>
         <p *ngIf="!editToggle.title">
           <mat-chip *ngIf="pCard.age || pCard.birthday" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">
             {{birthAge || pCard.age}}歲</mat-chip>
@@ -60,18 +74,22 @@
           <mat-chip *ngIf="pCard.birthday" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.birthday | date: 'MM/dd'}}</mat-chip>
           <mat-chip *ngIf="pCard.location" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.location}}</mat-chip>
         </p>
-        <div class="row">
-          <div class="col-4"><input *ngIf="editToggle.title" [(ngModel)]="pCard.age" class="form-control" id="age" placeholder="年齡" autocomplete="off"></div>
-          <div class="col-4"><input *ngIf="editToggle.title" [(ngModel)]="pCard.constellation" class="form-control" id="constellation" placeholder="星座" autocomplete="off"></div>
-          <div class="col-4"><input *ngIf="editToggle.title" [(ngModel)]="pCard.location" class="form-control" id="location" placeholder="區域" autocomplete="off"></div>
-          <div class="col" *ngIf="editToggle.title">
-            <mat-form-field class="mat-dp" (click)="dp.open()">
+
+
+        <div class="row" *ngIf="editToggle.title">
+          <div class="col-8"><input [(ngModel)]="pCard.name" class="form-control" id="name" placeholder="名稱" autocomplete="off"></div>
+          <div class="col-4"><input [(ngModel)]="pCard.startTime" class="form-control" id="startTime" placeholder="起始日" autocomplete="off"></div>
+          <div class="col-4"><input [(ngModel)]="pCard.age" class="form-control" id="age" placeholder="年齡" autocomplete="off"></div>
+          <div class="col-4"><input [(ngModel)]="pCard.constellation" class="form-control" id="constellation" placeholder="星座" autocomplete="off"></div>
+          <div class="col-4"><input [(ngModel)]="pCard.location" class="form-control" id="location" placeholder="區域" autocomplete="off"></div>
+          <div class="col">
+            <mat-form-field class="mat-dp" (click)="birthdayDp.open()">
               <mat-label>Input disabled</mat-label>
-              <input matInput [matDatepicker]="dp" [(ngModel)]="moment" (dateChange)="setBirthday(moment)">
-              <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-              <mat-datepicker #dp disabled="false"></mat-datepicker>
+              <input matInput [matDatepicker]="birthdayDp" [(ngModel)]="moment" (dateChange)="setBirthday(moment)">
+              <mat-datepicker-toggle matSuffix [for]="birthdayDp"></mat-datepicker-toggle>
+              <mat-datepicker #birthdayDp disabled="false"></mat-datepicker>
             </mat-form-field>
-            <span class="dp-input" (click)="dp.open()">{{ (pCard.birthday | date: 'yyyy/MM/dd') || "生日"}}</span>
+            <span class="dp-input" (click)="birthdayDp.open()">{{ (pCard.birthday | date: 'yyyy/MM/dd') || "生日"}}</span>
           </div>
         </div>
         <div class="birth-clear"></div>
@@ -175,7 +193,7 @@
         <textarea *ngIf="editToggle.remark" [(ngModel)]="pCard.remark" class="form-control" id="department" autocomplete="off"></textarea>
       </div>
 
-
+      <div class="card-edit-time">最後編輯時間: {{pCard.lastEditTime | date: 'yyyy/MM/dd HH:mm'}}</div>
     </div>
   </div>
 
@@ -227,7 +245,7 @@
         <form [formGroup]="fg">
           <div *ngFor="let folder of folderList;">
             <label *ngIf="folder.folderName !== urlFolderId">
-              <input type="radio" value="{{folder.collectionName}}" formControlName="folder">
+              <input type="radio" value="{{folder.folderName}}" formControlName="folder">
                 <span>{{folder.folderName}}</span>
             </label>
           </div>

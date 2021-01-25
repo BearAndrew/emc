@@ -2,7 +2,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from './../../_service/firebase.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ProfileCard, noteListName } from '../../_ts/profile-card';
-import { colorList } from '../../_ts/color';
+import { colorList, markList } from '../../_ts/variable';
 import { COMMA, ENTER, SPACE} from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
@@ -14,6 +14,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS,
 } from '@angular/material-moment-adapter';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-edit-card',
@@ -48,6 +49,7 @@ export class EditCardComponent implements OnInit, OnDestroy {
   noteListName = noteListName; // 筆記 親情 友情 愛情 工作
   colorList = colorList; // 卡片顏色
   pTagColor = colorList[0]; // Tag顏色
+  markList = markList;
   clipValue: string; // 剪貼簿暫存值
   domain = 'https://bearandrew.github.io'; // copy url domain
 
@@ -94,8 +96,12 @@ export class EditCardComponent implements OnInit, OnDestroy {
           (data) => {
             if (data) {
               console.log('edit-card getProfileCards: ' + JSON.stringify(data[this.urlDocId]));
-              this.pCard = data[this.urlDocId];
               this.cardId = data[this.urlDocId].id;
+              delete data[this.urlDocId].id;
+              data[this.urlDocId].birthday = (data[this.urlDocId].birthday) ?
+              new Date(data[this.urlDocId].birthday?.seconds * 1000) : null;
+              data[this.urlDocId].lastEditTime = new Date(data[this.urlDocId].lastEditTime?.seconds * 1000);
+              this.pCard = data[this.urlDocId];
 
               // set clip url
               this.uid = this.firebaseService.uid;
@@ -108,7 +114,8 @@ export class EditCardComponent implements OnInit, OnDestroy {
 
     this.cardFolderSub = this.firebaseService.getCardFolder().subscribe((data) => {
       if (data !== '') {
-        this.folderList = data.collectionList;
+        console.log('getCardFolder: ' + data);
+        this.folderList = data;
       }
     });
 

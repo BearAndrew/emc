@@ -61,7 +61,7 @@
         <input [(ngModel)]="cardFolderName" class="form-control" id="cardFolderName" autocomplete="off" placeholder="輸入">
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="myModal.hide()">取消</button>
+        <button type="button" class="btn btn-secondary" (click)="myModal.hide(); cardFolderName='';">取消</button>
         <button *ngIf="folderNameMode == 'new'" type="button" class="btn btn-primary" [disabled]="!cardFolderName" (click)="addCardFolder(); myModal.hide()">新增</button>
         <button *ngIf="folderNameMode == 'rename'" type="button" class="btn btn-primary" [disabled]="!cardFolderName" (click)="setCardFolder(); myModal.hide()">變更</button>
       </div>
