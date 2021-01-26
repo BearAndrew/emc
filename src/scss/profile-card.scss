@@ -48,6 +48,18 @@ $border-radius-size: 14px;
   z-index: 1;
 }
 
+.profile-card-mark {
+  position: absolute;
+  top: 1rem;
+  left: .5rem;
+  color: rgb(128, 128, 128);
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  font-size: 1rem;
+  z-index: 1;
+}
+
 img.profile-card-photo {
   position: relative;
   height: 100px;

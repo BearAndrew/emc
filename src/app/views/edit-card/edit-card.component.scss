@@ -98,7 +98,6 @@ textarea {
       width: 2rem;
       height: 2rem;
       font-size: 2rem;
-      text-align: center;
       z-index: 1;
     }
 
@@ -186,6 +185,12 @@ textarea {
     text-align: right;
     color: gray;
   }
+}
+
+.emoji{
+  font-size: 1.5rem;
+  vertical-align: middle;
+  line-height: 2;
 }
 
 

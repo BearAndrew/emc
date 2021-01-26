@@ -1,16 +1,19 @@
 <div class="container">
 
-  <div class="card">
+  <div class="card" *ngIf="!isLoading">
     <div class="card-bg {{pCard.cardColor}}">
       <div *ngIf="urlDocId" class="card-mark">
         <button mat-icon-button [matMenuTriggerFor]="colorpicker" aria-label="Example icon-button with a menu">
-          {{pCard.mark}}
+          <span class="emoji">{{pCard.mark || '🚫'}}</span>
         </button>
         <mat-menu #colorpicker="matMenu" class="container color-picker-wrapper">
           <div class="row">
+            <div class="col-3 pr-0 text-center mb-3">
+              <span class="emoji" (click)="pCard.mark = ''">🚫</span>
+            </div>
             <ng-container *ngFor="let mark of markList">
-              <div class="col-3 pr-0">
-                <span (click)="pCard.mark = mark">{{mark}}</span>
+              <div class="col-3 pr-0 text-center mb-3">
+                <span class="emoji" (click)="pCard.mark = mark">{{mark}}</span>
               </div>
             </ng-container>
           </div>
@@ -245,7 +248,7 @@
         <form [formGroup]="fg">
           <div *ngFor="let folder of folderList;">
             <label *ngIf="folder.folderName !== urlFolderId">
-              <input type="radio" value="{{folder.folderName}}" formControlName="folder">
+              <input type="radio" value="{{folder.id}}" formControlName="folder">
                 <span>{{folder.folderName}}</span>
             </label>
           </div>

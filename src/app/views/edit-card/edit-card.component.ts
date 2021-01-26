@@ -52,6 +52,7 @@ export class EditCardComponent implements OnInit, OnDestroy {
   markList = markList;
   clipValue: string; // 剪貼簿暫存值
   domain = 'https://bearandrew.github.io'; // copy url domain
+  isLoading = true;
 
   // 編輯按鈕判斷
   editToggle = {
@@ -95,6 +96,7 @@ export class EditCardComponent implements OnInit, OnDestroy {
         this.profileCardSub = firebaseService.getProfileCards(this.urlFolderId).subscribe(
           (data) => {
             if (data) {
+              this.isLoading = false;
               console.log('edit-card getProfileCards: ' + JSON.stringify(data[this.urlDocId]));
               this.cardId = data[this.urlDocId].id;
               delete data[this.urlDocId].id;
@@ -169,10 +171,10 @@ export class EditCardComponent implements OnInit, OnDestroy {
   }
 
 
-  moveCard(folderName: string) {
-    this.firebaseService.setProfileCard(folderName, this.cardId, this.pCard);
+  moveCard(folderId: string) {
+    this.firebaseService.setProfileCard(folderId, this.cardId, this.pCard);
     this.firebaseService.deleteProfileCard(this.urlFolderId, this.cardId);
-    this.router.navigate(['../../' + folderName] , {relativeTo: this.route});
+    this.router.navigate(['../../' + folderId] , {relativeTo: this.route});
   }
   //#endregion ====================== firebase ======================
 
