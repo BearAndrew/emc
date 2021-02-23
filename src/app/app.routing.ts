@@ -60,11 +60,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         canActivate: [ AuthGuard ],
-        // ... canActivate(redirectUnauthorizedToLogin),
         loadChildren: () => import('./views/dashboard/dashboard.module').then(m => m.DashboardModule)
       },
-      { path: 'share/:uid/:folderName', component: SharePageComponent },
-      { path: 'share/:uid/:folderName/:docId', component: ShareComponent },
+      { path: 'share/:uid/:folderId', component: SharePageComponent },
+      { path: 'share/:uid/:folderId/:cardId', component: ShareComponent },
     ]
   },
   { path: '**', component: P404Component }

@@ -219,11 +219,11 @@ export class AuthenticationService {
   }
 
 
-  private loginRoute() {
+  loginRoute() {
     // get return url from route parameters or default to '/'
-    // const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
-    const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
-    if (!returnUrl) { return; }
+    const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
+    // const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
+    // if (!returnUrl) { return; }
     console.log('loginRoute returnUrl: ' + returnUrl);
     this.logStateSubject.next(true);
     this.router.navigate([returnUrl]);

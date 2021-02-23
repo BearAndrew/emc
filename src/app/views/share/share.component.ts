@@ -18,10 +18,10 @@ export class ShareComponent implements OnInit {
     this.pCard = new ProfileCard();
     this.route.paramMap.subscribe(params => {
       const uid = params.get('uid');
-      const folderName = params.get('folderName');
-      const docId = params.get('docId');
+      const folderId = params.get('folderId');
+      const cardId = params.get('cardId');
 
-      shareService.getProfileCardsDB(uid, folderName, docId).subscribe(
+      shareService.getProfileCardsDB(uid, folderId, cardId).subscribe(
         (data) => {
           console.log(data);
           this.pCard = data;

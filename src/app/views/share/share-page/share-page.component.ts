@@ -26,10 +26,10 @@ export class SharePageComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe(params => {
       const uid = params.get('uid');
-      const folderName = params.get('folderName');
-      console.log('uid : ' + uid + ', folderName: ' + folderName);
+      const folderId = params.get('folderId');
+      console.log('uid : ' + uid + ', folderId: ' + folderId);
 
-      this.profileCardSub = this.shareService.getCardFolder(uid, folderName).subscribe(
+      this.profileCardSub = this.shareService.getCardFolder(uid, folderId).subscribe(
         (data) => {
           this.items = data;
           console.log('getProfileCards: ' + JSON.stringify(data));

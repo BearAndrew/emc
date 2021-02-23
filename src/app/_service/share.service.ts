@@ -11,15 +11,15 @@ export class ShareService {
   constructor(private firestore: AngularFirestore) { }
 
 
-  getProfileCardsDB(uid: string, folderName: string, docId: string): Observable<any> {
+  getProfileCardsDB(uid: string, folderId: string, cardId: string): Observable<any> {
     return this.firestore.collection('users-folder').doc(uid)
-    .collection(folderName).doc(docId).valueChanges();
+    .collection('card-folder').doc(folderId).collection('card').doc(cardId).valueChanges();
   }
 
-  getCardFolder(uid: string, folderName: string): Observable<any>  {
+  getCardFolder(uid: string, folderId: string): Observable<any>  {
     // return this.profileCardsSnapSub.asObservable();
     return this.firestore.collection('users-folder').doc(uid)
-    .collection(folderName).snapshotChanges().pipe(map(
+    .collection('card-folder').doc(folderId).collection('card', ref => ref.orderBy('createTime')).snapshotChanges().pipe(map(
       (action) => {
         return action.map((a) => {
           const data = a.payload.doc.data();

@@ -50,7 +50,7 @@ export class DefaultLayoutComponent {
 
     }});
 
-    this.navItems[2].url += '/' + this.firebaseService.uid + '/cards-folder';
+    this.navItems[2].url += '/' + this.firebaseService.uid + '/2Hzr0tqqza0jmchTB2NF';
     console.log(this.navItems[2]);
   }
 

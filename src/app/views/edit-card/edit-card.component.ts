@@ -108,9 +108,11 @@ export class EditCardComponent implements OnInit, OnDestroy {
               // set clip url
               this.uid = this.firebaseService.uid;
               this.clipValue = 'https://' + window.location.host +
-              '/profileCard/share/' + this.uid + '/' + this.urlFolderId + '/' + this.cardId;
+              '/emc/#/share/' + this.uid + '/' + this.urlFolderId + '/' + this.cardId;
             }
         });
+      } else {
+        this.isLoading = false;
       }
     });
 
@@ -158,6 +160,7 @@ export class EditCardComponent implements OnInit, OnDestroy {
     console.log(this.pCard);
     if (this.urlDocId !== 'new') {
       this.firebaseService.setProfileCard(this.urlFolderId, this.cardId, this.pCard);
+      this.isLoading = false;
     } else {
       this.firebaseService.addProfileCard(this.urlFolderId, this.pCard);
     }
