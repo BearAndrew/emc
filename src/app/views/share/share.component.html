@@ -22,9 +22,12 @@
 
         <div class="form-group card-item">
           <p>
-            <span class="p-tag p-tag-success p-tag-rounded p-tag-lg ">{{pCard.age}}歲</span>
-            <span class="p-tag p-tag-warning p-tag-rounded p-tag-lg ">{{pCard.constellation || '&nbsp;'}}</span>
-            <span class="p-tag p-tag-info p-tag-rounded p-tag-lg ">{{pCard.location || '&nbsp;'}}</span>
+            <mat-chip *ngIf="pCard.age || pCard.birthday" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">
+              {{pCard.age}}歲</mat-chip>
+            <mat-chip *ngIf="pCard.constellation || pCard.birthday" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">
+              {{pCard.constellation}}</mat-chip>
+            <mat-chip *ngIf="pCard.birthday" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.birthday | date: 'MM/dd'}}</mat-chip>
+            <mat-chip *ngIf="pCard.location" [ngClass]="pCard.cardColor" [selectable]="true" [disableRipple]="true">{{pCard.location}}</mat-chip>
           </p>
         </div>
       </div>
@@ -67,6 +70,7 @@
           <p class="card-item-content">{{pCard.remark || '&nbsp;'}}</p>
         </div>
 
+        <div class="card-edit-time">最後編輯時間: {{pCard.lastEditTime | date: 'yyyy/MM/dd HH:mm'}}</div>
       </div>
     </div>
   </div>

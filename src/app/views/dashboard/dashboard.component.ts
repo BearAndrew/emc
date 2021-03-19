@@ -1,3 +1,4 @@
+import { ManagerService } from './../../_service/manager.service';
 import { AuthenticationService } from './../../_service/authentication.service';
 import { Subscription } from 'rxjs';
 import { FirebaseService } from './../../_service/firebase.service';
@@ -41,8 +42,10 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
 
   profileCardSub: Subscription;
   filter = null;
+  clipValue: string; // 剪貼簿暫存值
 
   constructor(private viewportRuler: ViewportRuler,
+    public managerService: ManagerService,
     private firebaseService: FirebaseService,
     private router: Router,
     private route: ActivatedRoute) {
@@ -88,6 +91,18 @@ export class DashboardComponent implements OnInit , AfterViewInit, OnDestroy {
     this.firebaseService.deleteCardFolder(this.deleteFolderId);
     this.deleteFolderCheck = '';
   }
+
+
+
+  clip(id: string): string {
+    return this.managerService.domainUrl() + 'share/' + this.firebaseService.uid + '/' + id;
+  }
+
+
+
+
+
+
 
 
   dragMoved(e: CdkDragMove) {

@@ -222,8 +222,8 @@ export class AuthenticationService {
   loginRoute() {
     // get return url from route parameters or default to '/'
     const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/';
-    // const returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'];
-    // if (!returnUrl) { return; }
+    // share page don't route to returnUrl
+    if (window.location.toString().includes('share')) { return; }
     console.log('loginRoute returnUrl: ' + returnUrl);
     this.logStateSubject.next(true);
     this.router.navigate([returnUrl]);

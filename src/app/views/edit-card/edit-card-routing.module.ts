@@ -11,7 +11,7 @@ const routes: Routes = [
     }
   },
   {
-    path: ':id',
+    path: ':cardId',
     component: EditCardComponent,
     data: {
       title: '卡片'

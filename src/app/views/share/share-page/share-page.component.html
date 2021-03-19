@@ -1,4 +1,10 @@
-<div class="">
+<div  *ngIf="isLoading" class="app flex-row align-items-center">
+  <div class="lds-roller">
+    <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+  </div>
+</div>
+
+<div *ngIf="!isLoading">
   <h1>交友資料卡</h1>
 
   <div class="example-container">

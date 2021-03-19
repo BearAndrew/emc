@@ -1,9 +1,10 @@
+import { ManagerService } from './../../_service/manager.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FirebaseService } from './../../_service/firebase.service';
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
 import { ProfileCard, noteListName } from '../../_ts/profile-card';
 import { colorList, markList } from '../../_ts/variable';
-import { COMMA, ENTER, SPACE} from '@angular/cdk/keycodes';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -36,7 +37,7 @@ export class EditCardComponent implements OnInit, OnDestroy {
   @ViewChild('deleteModal') public deleteModal: ModalDirective;
   @ViewChild('moveModal') public moveModal: ModalDirective;
 
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA, SPACE];
+  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
   //#region ====================== variable ======================
   fg: FormGroup;
@@ -51,7 +52,6 @@ export class EditCardComponent implements OnInit, OnDestroy {
   pTagColor = colorList[0]; // Tag顏色
   markList = markList;
   clipValue: string; // 剪貼簿暫存值
-  domain = 'https://bearandrew.github.io'; // copy url domain
   isLoading = true;
 
   // 編輯按鈕判斷
@@ -84,13 +84,14 @@ export class EditCardComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     private messageService: MessageService,
+    private managerService: ManagerService,
     private fb: FormBuilder) {
 
     this.pCard = new ProfileCard();
 
     this.route.paramMap.subscribe(params => {
-      this.urlFolderId = params.get('folder');
-      this.urlDocId = params.get('id');
+      this.urlFolderId = params.get('folderId');
+      this.urlDocId = params.get('cardId');
 
       if (this.urlDocId !== 'new') {
         this.profileCardSub = firebaseService.getProfileCards(this.urlFolderId).subscribe(
@@ -107,8 +108,7 @@ export class EditCardComponent implements OnInit, OnDestroy {
 
               // set clip url
               this.uid = this.firebaseService.uid;
-              this.clipValue = 'https://' + window.location.host +
-              '/emc/#/share/' + this.uid + '/' + this.urlFolderId + '/' + this.cardId;
+              this.clipValue = this.managerService.domainUrl() + 'share/'  + this.uid + '/' + this.urlFolderId + '/' + this.cardId;
             }
         });
       } else {

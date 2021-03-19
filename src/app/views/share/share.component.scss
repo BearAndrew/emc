@@ -168,6 +168,11 @@ textarea {
       white-space: pre-wrap;
     }
   }
+
+  &-edit-time {
+    text-align: right;
+    color: gray;
+  }
 }
 
 

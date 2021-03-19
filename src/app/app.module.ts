@@ -32,6 +32,7 @@ import { LoginComponent } from './views/login/login.component';
 import { RegisterComponent } from './views/register/register.component';
 import { ShareComponent } from './views/share/share.component';
 import { SharePageComponent } from './views/share/share-page/share-page.component';
+import { MessageService } from 'primeng/api';
 
 const APP_CONTAINERS = [
   DefaultLayoutComponent
@@ -56,6 +57,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { ServiceWorkerModule } from '@angular/service-worker';
+
 
 @NgModule({
   imports: [
@@ -96,7 +98,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     ShareComponent,
     SharePageComponent,
   ],
-  providers: [{
+  providers: [MessageService, {
     provide: LocationStrategy,
     useClass: HashLocationStrategy
   }],

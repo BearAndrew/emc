@@ -29,6 +29,11 @@
                 <mat-icon>edit</mat-icon>
                 <span>重新命名</span>
               </button>
+
+              <button mat-menu-item [cdkCopyToClipboard]="clip(item.id)" (click)="managerService.SuccessToast('已複製連結')">
+                <mat-icon>share</mat-icon>
+                <span>分享連結</span>
+              </button>
             </mat-menu>
           </div>
           <div class="profile-card-name">
@@ -42,6 +47,19 @@
     </div>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
+
+<p-toast styleClass="custom-toast" position="bottom-center" key="toast"></p-toast>
 
 
 <!-- Button trigger modal -->

@@ -13,9 +13,8 @@ export class SharePageComponent implements OnInit {
 
   // public items: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9];
   items: ProfileCard[];
+  isLoading: boolean = true;
 
-
-  profileCardSub: Subscription;
   filter = null;
 
   constructor(private shareService: ShareService,
@@ -29,18 +28,14 @@ export class SharePageComponent implements OnInit {
       const folderId = params.get('folderId');
       console.log('uid : ' + uid + ', folderId: ' + folderId);
 
-      this.profileCardSub = this.shareService.getCardFolder(uid, folderId).subscribe(
+      this.shareService.getCardFolder(uid, folderId).subscribe(
         (data) => {
           this.items = data;
           console.log('getProfileCards: ' + JSON.stringify(data));
+          this.isLoading = false;
         }
       );
     });
-  }
-
-  // tslint:disable-next-line: use-lifecycle-interface
-  ngOnDestroy() {
-    this.profileCardSub.unsubscribe();
   }
 
 

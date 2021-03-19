@@ -15,7 +15,7 @@ const routes: Routes = [
     }
   },
   {
-    path: ':folder',
+    path: ':folderId',
     loadChildren: () => import('../card-folder/card-folder.module').then(m => m.CardFolderModule)
   }
 ];

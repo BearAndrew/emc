@@ -24,6 +24,9 @@ export class ShareComponent implements OnInit {
       shareService.getProfileCardsDB(uid, folderId, cardId).subscribe(
         (data) => {
           console.log(data);
+          data.birthday = (data.birthday) ?
+              new Date(data.birthday?.seconds * 1000) : null;
+              data.lastEditTime = new Date(data.lastEditTime?.seconds * 1000);
           this.pCard = data;
           this.isGetDB = true;
       });
